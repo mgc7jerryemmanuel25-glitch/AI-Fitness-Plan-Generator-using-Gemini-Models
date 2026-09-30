@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="result-header">
+    <p class="eyebrow">ADMIN DASHBOARD</p>
+    <h1>All Users & Workout Plans</h1>
+    <p>Review stored user information and the original/updated plans.</p>
+</section>
+
+{% if error %}
+<div class="alert error">{{ error }}</div>
+{% else %}
+<div class="table-wrap">
+<table>
+<thead><tr>
+<th>User ID</th><th>Name</th><th>Age</th><th>Weight</th><th>Goal</th><th>Intensity</th><th>Original Plan</th><th>Updated Plan</th>
+</tr></thead>
+<tbody>
+{% for item in users %}
+<tr>
+<td>{{ item.user.user_id }}</td><td>{{ item.user.name }}</td><td>{{ item.user.age }}</td>
+<td>{{ item.user.weight }} kg</td><td>{{ item.user.goal }}</td><td>{{ item.user.intensity }}</td>
+<td><pre>{{ item.plan.original_plan if item.plan else "No plan" }}</pre></td>
+<td><pre>{{ item.plan.updated_plan if item.plan and item.plan.updated_plan else "Not updated" }}</pre></td>
+</tr>
+{% else %}
+<tr><td colspan="8">No users found.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endif %}
+{% endblock %}

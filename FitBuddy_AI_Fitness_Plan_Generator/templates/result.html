@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="result-header">
+    <p class="eyebrow">YOUR PERSONALIZED PLAN</p>
+    <h1>Welcome, {{ user.name }} 👋</h1>
+    <p>Your plan is tailored to your selected goal and intensity.</p>
+</section>
+
+{% if message %}<div class="alert success">{{ message }}</div>{% endif %}
+
+<section class="profile-grid">
+    <div><span>Name</span><strong>{{ user.name }}</strong></div>
+    <div><span>User ID</span><strong>{{ user.user_id }}</strong></div>
+    <div><span>Age</span><strong>{{ user.age }}</strong></div>
+    <div><span>Weight</span><strong>{{ user.weight }} kg</strong></div>
+    <div><span>Goal</span><strong>{{ user.goal }}</strong></div>
+    <div><span>Intensity</span><strong>{{ user.intensity|title }}</strong></div>
+</section>
+
+<div class="two-column">
+    <section class="card plan-card">
+        <div class="section-title">
+            <h2>🏋️ Workout Plan</h2>
+            <span class="badge">{{ "Updated" if plan.updated_plan else "Original" }}</span>
+        </div>
+        {% if plan.updated_plan %}
+            <h3>Updated Plan</h3>
+            <pre class="plan-text">{{ plan.updated_plan }}</pre>
+            <details><summary>View original plan</summary><pre class="plan-text">{{ plan.original_plan }}</pre></details>
+        {% else %}
+            <pre class="plan-text">{{ plan.original_plan }}</pre>
+        {% endif %}
+    </section>
+
+    <aside>
+        <section class="card tip-card">
+            <h2>🥗 Nutrition / Recovery Tip</h2>
+            <p>{{ plan.nutrition_tip }}</p>
+        </section>
+        <section class="card feedback-card">
+            <h2>🔄 Refine Your Plan</h2>
+            <p>Tell FitBuddy what you want changed, such as more cardio, less volume, or an additional rest day.</p>
+            <form method="post" action="/submit-feedback">
+                <input type="hidden" name="user_id" value="{{ user.user_id }}">
+                <textarea name="feedback" required minlength="3" maxlength="2000" placeholder="Example: Add more cardio and make Day 4 a full rest day."></textarea>
+                <button class="primary-btn" type="submit">Update Plan</button>
+            </form>
+        </section>
+    </aside>
+</div>
+<div class="actions"><a class="secondary-btn" href="/">Create another plan</a></div>
+{% endblock %}
